@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Марк и Татьяна | Свадьба</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #f0ead8;
+            --accent-color: #c96f6f;
+            --text-color: #e8e4d8;
+            --bg-color: #313020;
+            --font-heading: 'Fraunces', serif;
+            --font-body: 'Manrope', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: #313020;
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- Секция 1: Первый экран --- */
+        .hero {
+            height: 100vh;
+            background-color: #313020;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.55)), url('images/photo1.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            padding-top: 15vh;
+            padding-left: 20px;
+            padding-right: 20px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .hero h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.6),
+                         0 0 30px rgba(201, 111, 111, 0.35),
+                         0 0 70px rgba(240, 234, 216, 0.12);
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.6);
+            font-weight: 300;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: transparent;
+            color: #fff;
+            text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.7);
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 20px rgba(201, 111, 111, 0.25),
+                        0 0 40px rgba(240, 234, 216, 0.08);
+        }
+
+        .btn:hover {
+            background-color: #fff;
+            color: #333;
+            border-color: #fff;
+        }
+
+        /* --- Секция 2: Карусель --- */
+        .gallery-section {
+            padding: 80px 0 70px;
+            text-align: center;
+            overflow: hidden;
+            background-color: #3a3928;
+            background-image: linear-gradient(180deg, #3a3928 0%, #313020 100%);
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            font-weight: 400;
+            font-style: italic;
+            text-shadow: 0 0 30px rgba(240, 234, 216, 0.25),
+                         0 0 60px rgba(201, 111, 111, 0.15);
+        }
+
+        .section-subtitle {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: #a8a48c;
+            margin-bottom: 45px;
+            font-weight: 300;
+        }
+
+        .slider-container {
+            position: relative;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+            perspective: 1400px;
+        }
+
+        /* Мягкая RGB-подсветка позади карусели */
+        .slider-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 75%;
+            height: 85%;
+            background: radial-gradient(ellipse at center,
+                        rgba(201, 111, 111, 0.14),
+                        rgba(240, 234, 216, 0.05) 45%,
+                        transparent 70%);
+            filter: blur(25px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .slider {
+            position: relative;
+            height: 540px;
+            transform-style: preserve-3d;
+            touch-action: pan-y;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                        opacity 0.8s ease,
+                        filter 0.8s ease;
+            will-change: transform, opacity;
+            cursor: pointer;
+        }
+
+        .slide-inner {
+            position: relative;
+            width: 68%;
+            height: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.18);
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+            transition: transform 7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* Активный слайд */
+        .slide.active {
+            transform: translateX(0) scale(1);
+            opacity: 1;
+            z-index: 3;
+            filter: none;
+            cursor: default;
+        }
+
+        .slide.active .slide-inner {
+            box-shadow: 0 35px 90px rgba(0, 0, 0, 0.35),
+                        0 0 45px rgba(201, 111, 111, 0.22),
+                        0 0 90px rgba(240, 234, 216, 0.08);
+        }
+
+        .slide.active img {
+            transform: scale(1.1); /* эффект Кена Бёрнса */
+        }
+
+        /* Соседние слайды — по бокам, без прозрачности */
+        .slide.prev {
+            transform: translateX(-52%) scale(0.78) rotateY(16deg);
+            opacity: 1;
+            z-index: 2;
+            filter: brightness(0.85) saturate(0.95);
+        }
+
+        .slide.next {
+            transform: translateX(52%) scale(0.78) rotateY(-16deg);
+            opacity: 1;
+            z-index: 2;
+            filter: brightness(0.85) saturate(0.95);
+        }
+
+        /* Дальние слайды */
+        .slide.prev-far {
+            transform: translateX(-85%) scale(0.55) rotateY(24deg);
+            opacity: 1;
+            z-index: 1;
+            filter: brightness(0.7);
+        }
+
+        .slide.next-far {
+            transform: translateX(85%) scale(0.55) rotateY(-24deg);
+            opacity: 1;
+            z-index: 1;
+            filter: brightness(0.7);
+        }
+
+        /* Кнопки-стрелки */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: #313020;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15),
+                        0 0 18px rgba(201, 111, 111, 0.3),
+                        0 0 40px rgba(240, 234, 216, 0.1);
+            transition: all 0.3s ease;
+            z-index: 20;
+            user-select: none;
+        }
+
+        .nav-btn:hover {
+            background: #fff;
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .prev-btn { left: 15px; }
+        .next-btn { right: 15px; }
+
+        /* Прогресс автопрокрутки */
+        .progress-bar {
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 3px;
+            overflow: hidden;
+            z-index: 20;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-color), #c96f6f);
+            border-radius: 3px;
+            box-shadow: 0 0 10px rgba(201, 111, 111, 0.7);
+        }
+
+        /* Точки-индикаторы */
+        .dots-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 40px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #6b6a55;
+            cursor: pointer;
+            border: none;
+            padding: 0;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .dot:hover {
+            background-color: #8a896f;
+            transform: scale(1.3);
+        }
+
+        .dot.active {
+            width: 32px;
+            border-radius: 6px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            box-shadow: 0 2px 8px rgba(139, 58, 58, 0.3),
+                        0 0 14px rgba(201, 111, 111, 0.55);
+        }
+
+        /* --- Секция 3: Календарь и Детали --- */
+        .details {
+            padding: 60px 20px;
+            background-color: #43422f;
+            text-align: center;
+        }
+
+        .calendar-wrapper {
+            max-width: 340px;
+            margin: 0 auto 60px auto;
+            background-color: #4a4934;
+            border-radius: 4px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            border: 1px solid #55543d;
+        }
+
+        .calendar-header {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-transform: capitalize;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+        }
+
+        .calendar-grid div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 35px;
+            width: 35px;
+            margin: 0 auto;
+            border-radius: 50%;
+        }
+
+        .calendar-grid .day-name {
+            font-weight: 500;
+            color: #a8a48c;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        /* Выделение 5-го числа */
+        .calendar-grid .special-day {
+            background-color: var(--accent-color);
+            color: white;
+            position: relative;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(139, 58, 58, 0.3),
+                        0 0 16px rgba(201, 111, 111, 0.5);
+        }
+
+        /* Сетка с карточками деталей */
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .detail-card {
+            padding: 35px 25px;
+            border: 1px solid #55543d;
+            border-radius: 4px;
+            background-color: #4a4934;
+            transition: transform 0.3s;
+        }
+
+        .detail-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05),
+                        0 0 25px rgba(201, 111, 111, 0.18),
+                        0 0 50px rgba(240, 234, 216, 0.06);
+        }
+
+        .detail-card h3 {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .detail-card p {
+            font-size: 0.9rem;
+            color: #c8c4b4;
+            margin-bottom: 6px;
+            font-weight: 300;
+        }
+        
+        .detail-card p strong {
+            font-weight: 500;
+            color: #f0ead8;
+        }
+
+        /* Строгие SVG-иконки */
+        .detail-card .icon {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            color: var(--primary-color);
+        }
+        
+        .detail-card .icon svg {
+            width: 28px;
+            height: 28px;
+            stroke-width: 1.2;
+        }
+
+        /* --- Секция 5: Дресс-код --- */
+        .info-section {
+            padding: 80px 20px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #4c4b36;
+        }
+
+        .info-section p {
+            margin-bottom: 20px;
+            font-size: 1rem;
+            color: #d8d4c4;
+            font-weight: 300;
+        }
+
+        .color-palette {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .color-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* --- Подвал --- */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: #26251a;
+            color: #fff;
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========================================= */
+        /* МОБИЛЬНАЯ АДАПТАЦИЯ                       */
+        /* ========================================= */
+        @media (max-width: 600px) {
+            .hero { padding-top: 12vh; }
+            .hero h1 { font-size: 2.8rem; letter-spacing: 1px; }
+            .hero p { font-size: 0.75rem; letter-spacing: 4px; margin-bottom: 20px; }
+            
+            .section-title { font-size: 2rem; }
+            
+            /* Карусель на мобильных */
+            .slider { height: 400px; }
+            .slide-inner { width: 80%; }
+            .nav-btn {
+                width: 40px;
+                height: 40px;
+            }
+            .prev-btn { left: 4px; }
+            .next-btn { right: 4px; }
+            .progress-bar { width: 120px; }
+            .slide.prev { transform: translateX(-42%) scale(0.8) rotateY(14deg); }
+            .slide.next { transform: translateX(42%) scale(0.8) rotateY(-14deg); }
+            .slide.prev-far { transform: translateX(-70%) scale(0.6) rotateY(20deg); }
+            .slide.next-far { transform: translateX(70%) scale(0.6) rotateY(-20deg); }
+
+            .calendar-wrapper { padding: 15px; max-width: 100%; }
+            .calendar-grid { gap: 5px; }
+            .calendar-grid div { height: 32px; width: 32px; font-size: 0.85rem; }
+
+            .details-grid { gap: 15px; }
+            .detail-card { padding: 25px 15px; }
+
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <h1>Марк & Таня</h1>
+        <p>Приглашаем на нашу свадьбу</p>
+    </section>
+
+    <section class="gallery-section">
+        <div class="slider-container" id="sliderContainer">
+            <button class="nav-btn prev-btn" id="prevBtn" aria-label="Назад">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            
+            <div class="slider" id="slider">
+                <div class="slide">
+                    <div class="slide-inner">
+                        <img src="images/photo2.png" alt="Фото">
+                    </div>
+                </div>
+                <div class="slide">
+                    <div class="slide-inner">
+                        <img src="images/photo3.png" alt="Фото">
+                    </div>
+                </div>
+                <div class="slide">
+                    <div class="slide-inner">
+                        <img src="images/photo4.png" alt="Фото">
+                    </div>
+                </div>
+            </div>
+            
+            <button class="nav-btn next-btn" id="nextBtn" aria-label="Вперед">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <div class="dots-container" id="dotsContainer"></div>
+    </section>
+
+    <section class="details" id="details">
+        <h2 class="section-title">Детали торжества</h2>
+        
+        <div class="calendar-wrapper">
+            <div class="calendar-header">Декабрь 2026</div>
+            <div class="calendar-grid">
+                <div class="day-name">Пн</div>
+                <div class="day-name">Вт</div>
+                <div class="day-name">Ср</div>
+                <div class="day-name">Чт</div>
+                <div class="day-name">Пт</div>
+                <div class="day-name">Сб</div>
+                <div class="day-name">Вс</div>
+                
+                <div></div>
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+                <div>4</div>
+                <div class="special-day">5</div>
+                <div>6</div>
+                <div>7</div>
+                <div>8</div>
+                <div>9</div>
+                <div>10</div>
+                <div>11</div>
+                <div>12</div>
+                <div>13</div>
+                <div>14</div>
+                <div>15</div>
+                <div>16</div>
+                <div>17</div>
+                <div>18</div>
+                <div>19</div>
+                <div>20</div>
+                <div>21</div>
+                <div>22</div>
+                <div>23</div>
+                <div>24</div>
+                <div>25</div>
+                <div>26</div>
+                <div>27</div>
+                <div>28</div>
+                <div>29</div>
+                <div>30</div>
+                <div>31</div>
+            </div>
+        </div>
+
+        <div class="details-grid">
+            <div class="detail-card">
+                <div class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                </div>
+                <h3>Когда</h3>
+                <p>5 декабря 2026</p>
+                <p>Суббота</p>
+                <p style="margin-top: 10px;"><strong>16:30</strong> — Сбор гостей</p>
+                <p><strong>17:00</strong> — Венчание</p>
+            </div>
+            <div class="detail-card">
+                <div class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                </div>
+                <h3>Где</h3>
+                <p>г. Новосибирск</p>
+                <p>12 Бронный переулок, 36</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="info-section">
+        <h2 class="section-title">Дресс-код</h2>
+        <p>Мы будем рады, если вы поддержите цветовую гамму нашего торжества в своих нарядах.</p>
+        
+        <div class="color-palette">
+            <div class="color-circle" style="background-color: #013220;" title="Тёмно-зелёный"></div>
+            <div class="color-circle" style="background-color: #352A18;" title="Тёмно-коричневый"></div>
+            <div class="color-circle" style="background-color: #E5D2A8;" title="Шампань"></div>
+            <div class="color-circle" style="background-color: #FFFEFE;" title="Белый"></div>
+        </div>
+    </section>
+
+    <footer>
+        До встречи 5 декабря
+    </footer>
+
+    <script>
+        // --- Логика Карусели ---
+        const slider = document.getElementById('slider');
+        const sliderContainer = document.getElementById('sliderContainer');
+        const slides = Array.from(document.querySelectorAll('.slide'));
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const dotsContainer = document.getElementById('dotsContainer');
+        const progressFill = document.getElementById('progressFill');
+
+        let currentIndex = 0;
+        const totalSlides = slides.length;
+        const AUTOPLAY_DELAY = 5000; // мс
+        let autoplayTimer = null;
+        let progressTimer = null;
+        let isPaused = false;
+        let startX = 0;
+        let isDragging = false;
+        let suppressClick = false;
+
+        // Создаём точки-индикаторы
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('button');
+            dot.classList.add('dot');
+            dot.setAttribute('aria-label', 'Слайд ' + (i + 1));
+            if (i === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(i));
+            dotsContainer.appendChild(dot);
+        }
+
+        const dots = Array.from(document.querySelectorAll('.dot'));
+
+        function updateCarousel() {
+            slides.forEach((slide, index) => {
+                let offset = index - currentIndex;
+                // Нормализация для бесконечной прокрутки
+                if (offset > totalSlides / 2) offset -= totalSlides;
+                if (offset < -totalSlides / 2) offset += totalSlides;
+
+                slide.classList.remove('active', 'prev', 'next', 'prev-far', 'next-far');
+
+                if (offset === 0) {
+                    slide.classList.add('active');
+                } else if (offset === -1) {
+                    slide.classList.add('prev');
+                } else if (offset === 1) {
+                    slide.classList.add('next');
+                } else if (offset < 0) {
+                    slide.classList.add('prev-far');
+                } else {
+                    slide.classList.add('next-far');
+                }
+            });
+
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentIndex);
+            });
+        }
+
+        function goToSlide(index) {
+            currentIndex = (index + totalSlides) % totalSlides;
+            updateCarousel();
+            restartAutoplay();
+        }
+
+        function nextSlide() { goToSlide(currentIndex + 1); }
+        function prevSlide() { goToSlide(currentIndex - 1); }
+
+        // --- Автопрокрутка с прогресс-баром ---
+        function startAutoplay() {
+            stopAutoplay();
+            if (isPaused) return;
+
+            const startTime = performance.now();
+            progressFill.style.transition = 'none';
+            progressFill.style.width = '0%';
+            void progressFill.offsetWidth; // принудительный reflow
+
+            progressTimer = requestAnimationFrame(function tick(now) {
+                const progress = Math.min((now - startTime) / AUTOPLAY_DELAY, 1);
+                progressFill.style.width = (progress * 100) + '%';
+                if (progress < 1) progressTimer = requestAnimationFrame(tick);
+            });
+
+            autoplayTimer = setTimeout(nextSlide, AUTOPLAY_DELAY);
+        }
+
+        function stopAutoplay() {
+            clearTimeout(autoplayTimer);
+            cancelAnimationFrame(progressTimer);
+        }
+
+        function restartAutoplay() {
+            if (!isPaused) startAutoplay();
+        }
+
+        // Пауза при наведении
+        sliderContainer.addEventListener('mouseenter', () => {
+            isPaused = true;
+            stopAutoplay();
+            progressFill.style.transition = 'width 0.3s ease';
+            progressFill.style.width = '100%';
+        });
+
+        sliderContainer.addEventListener('mouseleave', () => {
+            isPaused = false;
+            startAutoplay();
+        });
+
+        // Клик по боковым слайдам
+        slides.forEach((slide, index) => {
+            slide.addEventListener('click', () => {
+                if (suppressClick) { suppressClick = false; return; }
+                if (index !== currentIndex) goToSlide(index);
+            });
+        });
+
+        // Клавиатура
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // Свайп
+        slider.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isDragging = true;
+        }, { passive: true });
+
+        slider.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            const endX = e.changedTouches[0].clientX;
+            const diff = startX - endX;
+
+            if (diff > 50) { suppressClick = true; nextSlide(); }
+            else if (diff < -50) { suppressClick = true; prevSlide(); }
+            isDragging = false;
+        }, { passive: true });
+
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+
+        updateCarousel();
+        startAutoplay();
+    </script>
+</body>
+</html>
